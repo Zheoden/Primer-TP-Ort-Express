@@ -1,5 +1,8 @@
 import sql from 'mssql'
 import config from '../../db.js'
+import 'dotenv/config'
+
+const pizzaTabla = process.env.DB_TABLA_PIZZA;
 
 export class PizzaService {
     constructor() {
@@ -8,7 +11,7 @@ export class PizzaService {
 
     getPizza = async () => {
         console.log('This is a function on the service');
-        const response = await pool.Request().query('SELECT * from [dbo].[Pizza]');
+        const response = await pool.Request().query(`SELECT * from ${pizzaTabla}`);
         console.log(response)
 
         return response;
@@ -18,7 +21,7 @@ export class PizzaService {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('id',sql.Int, id)
-            .query('SELECT * from [dbo].[Pizza] where id = @id');
+            .query(`SELECT * from ${pizzaTabla} where id = @id`);
         console.log(response)
 
         return response;
@@ -31,7 +34,7 @@ export class PizzaService {
             .input('LibreGluten',sql.Bit, pizza?.libreGluten ?? false)
             .input('Importe',sql.NChar, pizza?.importe ?? 0)
             .input('Descripcion',sql.NChar, pizza?.description ?? '')
-            .query('INSERT INTO [dbo].[Pizza](Nombre, LibreGluten, Importe, Descripcion) VALUES (@Nombre, @LibreGluten, @Importe, @Descripcion)');
+            .query(`INSERT INTO ${pizzaTabla}(Nombre, LibreGluten, Importe, Descripcion) VALUES (@Nombre, @LibreGluten, @Importe, @Descripcion)`);
         console.log(response)
 
         return response;
@@ -45,7 +48,7 @@ export class PizzaService {
             .input('LibreGluten',sql.Bit, pizza?.libreGluten ?? false)
             .input('Importe',sql.NChar, pizza?.importe ?? 0)
             .input('Descripcion',sql.NChar, pizza?.description ?? '')
-            .query('UPDATE Pizzas SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id');
+            .query(`UPDATE Pizzas SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id`);
         console.log(response)
 
         return response;
@@ -55,7 +58,7 @@ export class PizzaService {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('id',sql.Int, id)
-            .query('DELETE FROM [dbo].[Pizza] WHERE id = @id');
+            .query(`DELETE FROM ${pizzaTabla} WHERE id = @id`);
         console.log(response)
 
         return response;
