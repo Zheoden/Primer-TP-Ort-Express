@@ -1,10 +1,12 @@
 import sql from 'mssql'
 import config from '../../db.js'
 
-const pool = await sql.connect(config);
 export class PizzaService {
+    constructor() {
+        this.pool = sql.connect(config);
+    }
 
-    getPizza = () => {
+    getPizza = async () => {
         console.log('This is a function on the service');
         const response = await pool.Request().query('SELECT * from [dbo].[Pizza]');
         console.log(response)
@@ -12,7 +14,7 @@ export class PizzaService {
         return response;
     }
 
-    getPizzaById = (id) => {
+    getPizzaById = async (id) => {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('id',sql.Int, id)
@@ -22,7 +24,7 @@ export class PizzaService {
         return response;
     }
 
-    createPizza = (pizza) => {
+    createPizza = async (pizza) => {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('Nombre',sql.NChar, pizza?.nombre ?? '')
@@ -35,7 +37,7 @@ export class PizzaService {
         return response;
     }
 
-    updatePizzaById = (id, pizza) => {
+    updatePizzaById = async (id, pizza) => {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('id',sql.Int, id)
@@ -49,7 +51,7 @@ export class PizzaService {
         return response;
     }
 
-    deletePizzaById = (id) => {
+    deletePizzaById = async (id) => {
         console.log('This is a function on the service');
         const response = await pool.request()
             .input('id',sql.Int, id)
