@@ -25,7 +25,7 @@ export class PizzaService {
             .query(`SELECT * from ${pizzaTabla} where id = @id`);
         console.log(response)
 
-        return response;
+        return response.recordset[0];
     }
 
     createPizza = async (pizza) => {
@@ -40,7 +40,7 @@ export class PizzaService {
             .query(`INSERT INTO ${pizzaTabla}(Nombre, LibreGluten, Importe, Descripcion) VALUES (@Nombre, @LibreGluten, @Importe, @Descripcion)`);
         console.log(response)
 
-        return response;
+        return response.recordset;
     }
 
     updatePizzaById = async (id, pizza) => {
@@ -56,7 +56,7 @@ export class PizzaService {
             .query(`UPDATE Pizzas SET Nombre = @Nombre, LibreGluten = @LibreGluten, Importe = @Importe, Descripcion = @Descripcion WHERE id = @Id`);
         console.log(response)
 
-        return response;
+        return response.recordset;
     }
 
     deletePizzaById = async (id) => {
@@ -68,6 +68,6 @@ export class PizzaService {
             .query(`DELETE FROM ${pizzaTabla} WHERE id = @id`);
         console.log(response)
 
-        return response;
+        return response.recordset;
     }
 }
