@@ -1,12 +1,32 @@
 import { Router } from 'express';
 import { PizzaService } from '../services/pizzaService.js';
+import sql from 'mssql'
 
 const router = Router();
 const pizzaService = new PizzaService();
+var config = {
+  user: 'root',
+  password: 'root',
+  server: 'localhost',
+  database: 'Ort',
+  options: {
+    trustServerCertificate: true,
+    trustedConnection: true
+  }
+};
 
 router.get('', async (req, res) => {
   console.log(`This is a get operation`);
 
+  try {
+    await sql.connect(config);
+    const res = await sql.Request().query('SELECT * from [dbo].[users]');
+    console.log(res)
+  }
+  catch(e){
+    console.log(e);
+  }
+  
   const pizzas = pizzaService.getPizza();
 
   return res.status(200).json(pizzas);
