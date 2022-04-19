@@ -5,20 +5,21 @@ import 'dotenv/config'
 const pizzaTabla = process.env.DB_TABLA_PIZZA;
 
 export class PizzaService {
-    constructor() {
-        this.pool = sql.connect(config);
-    }
 
     getPizza = async () => {
         console.log('This is a function on the service');
-        const response = await pool.Request().query(`SELECT * from ${pizzaTabla}`);
+
+        const pool = await sql.connect(config);
+        const response = await pool.request().query(`SELECT * from ${pizzaTabla}`);
         console.log(response)
 
-        return response;
+        return response.recordset;
     }
 
     getPizzaById = async (id) => {
         console.log('This is a function on the service');
+
+        const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id',sql.Int, id)
             .query(`SELECT * from ${pizzaTabla} where id = @id`);
@@ -29,6 +30,8 @@ export class PizzaService {
 
     createPizza = async (pizza) => {
         console.log('This is a function on the service');
+
+        const pool = await sql.connect(config);
         const response = await pool.request()
             .input('Nombre',sql.NChar, pizza?.nombre ?? '')
             .input('LibreGluten',sql.Bit, pizza?.libreGluten ?? false)
@@ -42,6 +45,8 @@ export class PizzaService {
 
     updatePizzaById = async (id, pizza) => {
         console.log('This is a function on the service');
+
+        const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id',sql.Int, id)
             .input('Nombre',sql.NChar, pizza?.nombre ?? '')
@@ -56,6 +61,8 @@ export class PizzaService {
 
     deletePizzaById = async (id) => {
         console.log('This is a function on the service');
+
+        const pool = await sql.connect(config);
         const response = await pool.request()
             .input('id',sql.Int, id)
             .query(`DELETE FROM ${pizzaTabla} WHERE id = @id`);
