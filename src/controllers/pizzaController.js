@@ -1,18 +1,19 @@
 import { Router } from 'express';
 import { PizzaService } from '../services/pizzaService.js';
+import { Authenticate } from '../common/jwt.strategy.js';
 
 const router = Router();
 const pizzaService = new PizzaService();
 
-router.get('', async (req, res) => {
+router.get('', Authenticate, async (req, res) => {
   console.log(`This is a get operation`);
-  
+
   const pizzas = await pizzaService.getPizza();
 
   return res.status(200).json(pizzas);
 });
 
-router.get('/:id', async (req, res) => {
+router.get('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a get operation`);
 
@@ -21,7 +22,7 @@ router.get('/:id', async (req, res) => {
   return res.status(200).json(pizza);
 });
 
-router.post('', async (req, res) => {
+router.post('', Authenticate, async (req, res) => {
   console.log(`This is a post operation`);
 
   const pizza = await pizzaService.createPizza(req.body);
@@ -29,7 +30,7 @@ router.post('', async (req, res) => {
   return res.status(201).json(pizza);
 });
 
-router.put('/:id', async (req, res) => {
+router.put('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a put operation`);
 
@@ -38,7 +39,7 @@ router.put('/:id', async (req, res) => {
   return res.status(200).json(pizza);
 });
 
-router.delete('/:id', async (req, res) => {
+router.delete('/:id', Authenticate, async (req, res) => {
   console.log(`Request URL Param: ${req.params.id}`);
   console.log(`This is a delete operation`);
 
